@@ -2,7 +2,7 @@ package com.github.tvbox.osc.util.js;
 
 import android.util.Base64;
 
-import com.github.catvod.net.OkHttp;
+import com.github.tvbox.osc.net.OkHttp;
 import com.github.tvbox.osc.util.LOG;
 import com.google.common.net.HttpHeaders;
 import com.lzy.okgo.OkGo;

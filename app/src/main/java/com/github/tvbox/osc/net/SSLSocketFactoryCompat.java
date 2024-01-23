@@ -1,19 +1,14 @@
-package com.github.catvod.net;
-
-import org.conscrypt.Conscrypt;
+package com.github.tvbox.osc.net;
 
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.security.GeneralSecurityException;
-import java.security.Provider;
-import java.security.Security;
 import java.security.cert.X509Certificate;
 import java.util.LinkedList;
 import java.util.List;
 
 import javax.net.ssl.HostnameVerifier;
-import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLSocket;
 import javax.net.ssl.SSLSocketFactory;
@@ -58,12 +53,9 @@ public class SSLSocketFactoryCompat extends SSLSocketFactory {
 
     public SSLSocketFactoryCompat() {
         try {
-            Provider provider = Conscrypt.newProvider();
-            Security.insertProviderAt(provider, 1);
-            SSLContext sslContext = SSLContext.getInstance("TLS", provider);
+            SSLContext sslContext = SSLContext.getInstance("TLS");
             sslContext.init(null, new X509TrustManager[]{trustAllCert}, null);
             defaultFactory = sslContext.getSocketFactory();
-            HttpsURLConnection.setDefaultSSLSocketFactory(defaultFactory);
         } catch (GeneralSecurityException e) {
             throw new AssertionError();
         }

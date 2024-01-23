@@ -1,4 +1,4 @@
-package com.github.catvod.net;
+package com.github.tvbox.osc.net;
 
 import android.util.ArrayMap;
 
@@ -16,7 +16,6 @@ import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
-import okhttp3.dnsoverhttps.DnsOverHttps;
 
 public class OkHttp {
 

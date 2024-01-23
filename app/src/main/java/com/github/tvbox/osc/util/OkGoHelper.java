@@ -7,7 +7,7 @@ import static okhttp3.ConnectionSpec.RESTRICTED_TLS;
 
 import android.graphics.Bitmap;
 
-import com.github.catvod.net.SSLSocketFactoryCompat;
+import com.github.tvbox.osc.net.SSLSocketFactoryCompat;
 import com.github.tvbox.osc.base.App;
 import com.github.tvbox.osc.picasso.MyOkhttpDownLoader;
 import com.github.tvbox.osc.util.urlhttp.BrotliInterceptor;
