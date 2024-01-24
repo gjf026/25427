@@ -18,6 +18,8 @@ import com.github.tvbox.osc.bean.IJKCode;
 import com.github.tvbox.osc.bean.SourceBean;
 import com.github.tvbox.osc.event.RefreshEvent;
 import com.github.tvbox.osc.player.thirdparty.RemoteTVBox;
+import com.github.tvbox.osc.proxy.AppPrefs;
+import com.github.tvbox.osc.proxy.WebProxyDialog;
 import com.github.tvbox.osc.ui.activity.HomeActivity;
 import com.github.tvbox.osc.ui.activity.SettingActivity;
 import com.github.tvbox.osc.ui.adapter.SelectDialogAdapter;
@@ -72,6 +74,7 @@ public class ModelSettingFragment extends BaseLazyFragment {
     private TextView tvFastSearchText;
     private TextView tvRecStyleText;
     private TextView tvIjkCachePlay;
+    private TextView tvShowProxyText;
 
     public static ModelSettingFragment newInstance() {
         return new ModelSettingFragment().setArguments();
@@ -89,6 +92,7 @@ public class ModelSettingFragment extends BaseLazyFragment {
     @Override
     protected void init() {
         tvFastSearchText = findViewById(R.id.showFastSearchText);
+        tvShowProxyText = findViewById(R.id.showProxyText);
         tvFastSearchText.setText(Hawk.get(HawkConfig.FAST_SEARCH_MODE, false) ? "已开启" : "已关闭");
         tvRecStyleText = findViewById(R.id.showRecStyleText);
         tvRecStyleText.setText(Hawk.get(HawkConfig.HOME_REC_STYLE, false) ? "是" : "否");
@@ -211,7 +215,7 @@ public class ModelSettingFragment extends BaseLazyFragment {
                             ApiConfig.get().setSourceBean(value);
                             tvHomeApi.setText(ApiConfig.get().getHomeSourceBean().getName());
 
-                            Intent intent =new Intent(mContext, HomeActivity.class);
+                            Intent intent = new Intent(mContext, HomeActivity.class);
                             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                             Bundle bundle = new Bundle();
                             bundle.putBoolean("useCache", true);
@@ -297,8 +301,6 @@ public class ModelSettingFragment extends BaseLazyFragment {
                 dialog.show();
             }
         });
-
-
 
         findViewById(R.id.llMediaCodec).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -391,7 +393,7 @@ public class ModelSettingFragment extends BaseLazyFragment {
                 int defaultPos = 0;
                 ArrayList<Integer> players = PlayerHelper.getExistPlayerTypes();
                 ArrayList<Integer> renders = new ArrayList<>();
-                for(int p = 0; p<players.size(); p++) {
+                for (int p = 0; p < players.size(); p++) {
                     renders.add(p);
                     if (players.get(p) == playerType) {
                         defaultPos = p;
@@ -661,6 +663,44 @@ public class ModelSettingFragment extends BaseLazyFragment {
 
         findViewById(R.id.llIjkCachePlay).setOnClickListener((view -> onClickIjkCachePlay(view)));
         findViewById(R.id.llClearCache).setOnClickListener((view -> onClickClearCache(view)));
+
+        initProxyView();
+    }
+
+    private void initProxyView() {
+        boolean isProxyEnabled = AppPrefs.instance(mActivity).isWebProxyEnabled();
+        tvShowProxyText.setText(isProxyEnabled ? "已开启" : "已关闭");
+        findViewById(R.id.proxy).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                boolean isProxyEnabled = AppPrefs.instance(mActivity).isWebProxyEnabled();
+                WebProxyDialog webProxyDialog = new WebProxyDialog(mActivity);
+                webProxyDialog.enable(!isProxyEnabled);
+
+                isProxyEnabled = AppPrefs.instance(mActivity).isWebProxyEnabled();
+                tvShowProxyText.setText(isProxyEnabled ? "已开启" : "已关闭");
+                if (!isProxyEnabled) {
+                    refreshHomePage();
+                }
+                webProxyDialog.setDismissListener(new DialogInterface.OnDismissListener() {
+                    @Override
+                    public void onDismiss(DialogInterface dialog) {
+                        boolean isProxyEnabled = AppPrefs.instance(mActivity).isWebProxyEnabled();
+                        tvShowProxyText.setText(isProxyEnabled ? "已开启" : "已关闭");
+                        refreshHomePage();
+                    }
+                });
+            }
+        });
+    }
+
+    private void refreshHomePage() {
+        Intent intent = new Intent(mContext, HomeActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        Bundle bundle = new Bundle();
+        bundle.putBoolean("useCache", true);
+        intent.putExtras(bundle);
+        startActivity(intent);
     }
 
     private void onClickIjkCachePlay(View v) {
