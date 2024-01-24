@@ -6,7 +6,7 @@
     android:layout_gravity="center"
     android:gravity="center"
     android:orientation="vertical"
-    android:padding="10sp">
+    android:padding="5dp">
 
     <EditText
         android:id="@+id/proxy_host"
@@ -68,7 +68,7 @@
         android:id="@+id/proxy_type_label"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="5dp"
         android:text="@string/proxy_type"
         android:textColor="@color/dialog_text_color"
         android:textSize="18sp"
@@ -101,8 +101,7 @@
         android:id="@+id/proxy_config_message"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:lines="5"
+        android:maxLines="5"
         android:textColor="@color/dialog_text_color"
         android:padding="5dp" />
 </LinearLayout>
