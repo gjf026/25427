@@ -243,7 +243,8 @@ public class WebProxyDialog {
             }
         });
 
-        if (!TextUtils.isEmpty(mProxyManager.getProxyHost())) {
+        if (mProxyManager.getProxyType() != Proxy.Type.DIRECT
+                && !TextUtils.isEmpty(mProxyManager.getProxyHost())) {
             mProxyConfigDialog.getButton(AlertDialog.BUTTON_POSITIVE).requestFocus();
         }
     }
