@@ -679,28 +679,16 @@ public class ModelSettingFragment extends BaseLazyFragment {
 
                 isProxyEnabled = AppPrefs.instance(mActivity).isWebProxyEnabled();
                 tvShowProxyText.setText(isProxyEnabled ? "已开启" : "已关闭");
-                if (!isProxyEnabled) {
-                    refreshHomePage();
-                }
+
                 webProxyDialog.setDismissListener(new DialogInterface.OnDismissListener() {
                     @Override
                     public void onDismiss(DialogInterface dialog) {
                         boolean isProxyEnabled = AppPrefs.instance(mActivity).isWebProxyEnabled();
                         tvShowProxyText.setText(isProxyEnabled ? "已开启" : "已关闭");
-                        refreshHomePage();
                     }
                 });
             }
         });
-    }
-
-    private void refreshHomePage() {
-        Intent intent = new Intent(mContext, HomeActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        Bundle bundle = new Bundle();
-        bundle.putBoolean("useCache", true);
-        intent.putExtras(bundle);
-        startActivity(intent);
     }
 
     private void onClickIjkCachePlay(View v) {

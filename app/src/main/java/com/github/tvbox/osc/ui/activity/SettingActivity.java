@@ -15,6 +15,7 @@ import com.github.tvbox.osc.R;
 import com.github.tvbox.osc.api.ApiConfig;
 import com.github.tvbox.osc.base.BaseActivity;
 import com.github.tvbox.osc.base.BaseLazyFragment;
+import com.github.tvbox.osc.proxy.AppPrefs;
 import com.github.tvbox.osc.ui.adapter.SettingMenuAdapter;
 import com.github.tvbox.osc.ui.adapter.SettingPageAdapter;
 import com.github.tvbox.osc.ui.fragment.ModelSettingFragment;
@@ -46,6 +47,7 @@ public class SettingActivity extends BaseActivity {
     private String currentApi;
     private int homeRec;
     private int dnsOpt;
+    private boolean currentProxy;
 
     @Override
     protected int getLayoutResID() {
@@ -114,6 +116,7 @@ public class SettingActivity extends BaseActivity {
         sortList.add("设置其他");
         sortAdapter.setNewData(sortList);
         initViewPager();
+        currentProxy = AppPrefs.instance(this).isWebProxyEnabled();
     }
 
     private void initViewPager() {
@@ -180,7 +183,8 @@ public class SettingActivity extends BaseActivity {
         if ((homeSourceKey != null && !homeSourceKey.equals(Hawk.get(HawkConfig.HOME_API, ""))) ||
                 !currentApi.equals(Hawk.get(HawkConfig.API_URL, "")) ||
                 homeRec != Hawk.get(HawkConfig.HOME_REC, 0) ||
-                dnsOpt != Hawk.get(HawkConfig.DOH_URL, 0)) {
+                dnsOpt != Hawk.get(HawkConfig.DOH_URL, 0) ||
+                currentProxy != AppPrefs.instance(this).isWebProxyEnabled()) {
             AppManager.getInstance().finishAllActivity();
             if (currentApi.equals(Hawk.get(HawkConfig.API_URL, ""))) {
                 Bundle bundle = new Bundle();
