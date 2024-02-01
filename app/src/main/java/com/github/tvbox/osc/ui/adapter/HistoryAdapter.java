@@ -1,6 +1,7 @@
 package com.github.tvbox.osc.ui.adapter;
 
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -15,6 +16,7 @@ import com.github.tvbox.osc.picasso.RoundTransformation;
 import com.github.tvbox.osc.util.DefaultConfig;
 import com.github.tvbox.osc.util.HawkConfig;
 import com.github.tvbox.osc.util.MD5;
+import com.orhanobut.hawk.Hawk;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -83,12 +85,26 @@ public class HistoryAdapter extends BaseQuickAdapter<VodInfo, BaseViewHolder> {
         ImageView ivThumb = helper.getView(R.id.ivThumb);
         //由于部分电视机使用glide报错
         if (!TextUtils.isEmpty(item.pic)) {
+            item.pic = item.pic.trim();
+            RoundTransformation roundTransformation = new RoundTransformation(MD5.string2MD5(item.pic))
+                    .centerCorp(true)
+                    .roundRadius(AutoSizeUtils.mm2px(mContext, 10), RoundTransformation.RoundType.ALL);
+            int defaultRatio = Hawk.get(HawkConfig.PIC_RATIO, 0);
+            int width;
+            int height;
+            if (defaultRatio == 1) {
+                width = AutoSizeUtils.dp2px(mContext, 208);
+                height = AutoSizeUtils.dp2px(mContext, 117);
+                FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(width, height);
+                helper.getView(R.id.itemView).setLayoutParams(layoutParams);
+            } else {
+                width = AutoSizeUtils.mm2px(mContext, 210);
+                height = AutoSizeUtils.mm2px(mContext, 280);
+            }
+            roundTransformation = roundTransformation.override(width, height);
             Picasso.get()
                     .load(DefaultConfig.checkReplaceProxy(item.pic))
-                    .transform(new RoundTransformation(MD5.string2MD5(item.pic + item.name))
-                            .centerCorp(true)
-                            .override(AutoSizeUtils.mm2px(mContext, 300), AutoSizeUtils.mm2px(mContext, 400))
-                            .roundRadius(AutoSizeUtils.mm2px(mContext, 10), RoundTransformation.RoundType.ALL))
+                    .transform(roundTransformation)
                     .placeholder(R.drawable.img_loading_placeholder)
                     .noFade()
                     .error(R.drawable.img_loading_placeholder)

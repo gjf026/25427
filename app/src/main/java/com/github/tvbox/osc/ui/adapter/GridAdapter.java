@@ -1,6 +1,7 @@
 package com.github.tvbox.osc.ui.adapter;
 
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
@@ -95,20 +96,23 @@ public class GridAdapter extends BaseQuickAdapter<Movie.Video, BaseViewHolder> {
         ImageView ivThumb = helper.getView(R.id.ivThumb);
         //由于部分电视机使用glide报错
         if (!TextUtils.isEmpty(item.pic)) {
-            FrameLayout.LayoutParams layoutParams;
             item.pic = item.pic.trim();
             RoundTransformation roundTransformation = new RoundTransformation(MD5.string2MD5(item.pic))
                     .centerCorp(true)
                     .roundRadius(AutoSizeUtils.mm2px(mContext, 10), RoundTransformation.RoundType.ALL);
             int defaultRatio = Hawk.get(HawkConfig.PIC_RATIO, 0);
+            int width;
+            int height;
             if (defaultRatio == 1) {
-                roundTransformation = roundTransformation.override(AutoSizeUtils.mm2px(mContext, 320), AutoSizeUtils.mm2px(mContext, 180));
-                layoutParams = new FrameLayout.LayoutParams(AutoSizeUtils.mm2px(mContext, 320), AutoSizeUtils.mm2px(mContext, 180));
+                width = AutoSizeUtils.dp2px(mContext, 208);
+                height = AutoSizeUtils.dp2px(mContext, 117);
+                FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(width, height);
+                helper.getView(R.id.itemView).setLayoutParams(layoutParams);
             } else {
-                roundTransformation = roundTransformation.override(AutoSizeUtils.mm2px(mContext, 210), AutoSizeUtils.mm2px(mContext, 280));
-                layoutParams = new FrameLayout.LayoutParams(AutoSizeUtils.mm2px(mContext, 210), AutoSizeUtils.mm2px(mContext, 280));
+                width = AutoSizeUtils.mm2px(mContext, 210);
+                height = AutoSizeUtils.mm2px(mContext, 280);
             }
-            helper.getView(R.id.itemView).setLayoutParams(layoutParams);
+            roundTransformation = roundTransformation.override(width, height);
             Picasso.get()
                     .load(DefaultConfig.checkReplaceProxy(item.pic))
                     .transform(roundTransformation)
