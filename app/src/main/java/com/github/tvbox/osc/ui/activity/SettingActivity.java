@@ -48,6 +48,7 @@ public class SettingActivity extends BaseActivity {
     private int homeRec;
     private int dnsOpt;
     private boolean currentProxy;
+    private int picRatio;
 
     @Override
     protected int getLayoutResID() {
@@ -117,6 +118,7 @@ public class SettingActivity extends BaseActivity {
         sortAdapter.setNewData(sortList);
         initViewPager();
         currentProxy = AppPrefs.instance(this).isWebProxyEnabled();
+        picRatio = Hawk.get(HawkConfig.PIC_RATIO, 0);
     }
 
     private void initViewPager() {
@@ -184,7 +186,8 @@ public class SettingActivity extends BaseActivity {
                 !currentApi.equals(Hawk.get(HawkConfig.API_URL, "")) ||
                 homeRec != Hawk.get(HawkConfig.HOME_REC, 0) ||
                 dnsOpt != Hawk.get(HawkConfig.DOH_URL, 0) ||
-                currentProxy != AppPrefs.instance(this).isWebProxyEnabled()) {
+                currentProxy != AppPrefs.instance(this).isWebProxyEnabled() ||
+                picRatio != Hawk.get(HawkConfig.PIC_RATIO, 0)) {
             AppManager.getInstance().finishAllActivity();
             if (currentApi.equals(Hawk.get(HawkConfig.API_URL, ""))) {
                 Bundle bundle = new Bundle();

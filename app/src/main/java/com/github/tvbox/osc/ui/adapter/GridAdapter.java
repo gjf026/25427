@@ -2,6 +2,8 @@ package com.github.tvbox.osc.ui.adapter;
 
 import android.text.TextUtils;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -11,7 +13,9 @@ import com.github.tvbox.osc.R;
 import com.github.tvbox.osc.bean.Movie;
 import com.github.tvbox.osc.picasso.RoundTransformation;
 import com.github.tvbox.osc.util.DefaultConfig;
+import com.github.tvbox.osc.util.HawkConfig;
 import com.github.tvbox.osc.util.MD5;
+import com.orhanobut.hawk.Hawk;
 import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.Picasso;
 
@@ -28,19 +32,19 @@ public class GridAdapter extends BaseQuickAdapter<Movie.Video, BaseViewHolder> {
     private boolean mShowList = false;
 
     public GridAdapter(boolean l) {
-        super( l ? R.layout.item_list:R.layout.item_grid, new ArrayList<>());
+        super(l ? R.layout.item_list : R.layout.item_grid, new ArrayList<>());
         this.mShowList = l;
     }
 
     @Override
     protected void convert(BaseViewHolder helper, Movie.Video item) {
-        if(this.mShowList) {
+        if (this.mShowList) {
             helper.setText(R.id.tvNote, item.note);
             helper.setText(R.id.tvName, item.name);
             ImageView ivThumb = helper.getView(R.id.ivThumb);
             //由于部分电视机使用glide报错
             if (!TextUtils.isEmpty(item.pic)) {
-                item.pic=item.pic.trim();
+                item.pic = item.pic.trim();
                 Picasso.get()
                         .load(DefaultConfig.checkReplaceProxy(item.pic))
                         .transform(new RoundTransformation(MD5.string2MD5(item.pic))
@@ -91,13 +95,23 @@ public class GridAdapter extends BaseQuickAdapter<Movie.Video, BaseViewHolder> {
         ImageView ivThumb = helper.getView(R.id.ivThumb);
         //由于部分电视机使用glide报错
         if (!TextUtils.isEmpty(item.pic)) {
-            item.pic=item.pic.trim();
+            FrameLayout.LayoutParams layoutParams;
+            item.pic = item.pic.trim();
+            RoundTransformation roundTransformation = new RoundTransformation(MD5.string2MD5(item.pic))
+                    .centerCorp(true)
+                    .roundRadius(AutoSizeUtils.mm2px(mContext, 10), RoundTransformation.RoundType.ALL);
+            int defaultRatio = Hawk.get(HawkConfig.PIC_RATIO, 0);
+            if (defaultRatio == 1) {
+                roundTransformation = roundTransformation.override(AutoSizeUtils.mm2px(mContext, 320), AutoSizeUtils.mm2px(mContext, 180));
+                layoutParams = new FrameLayout.LayoutParams(AutoSizeUtils.mm2px(mContext, 320), AutoSizeUtils.mm2px(mContext, 180));
+            } else {
+                roundTransformation = roundTransformation.override(AutoSizeUtils.mm2px(mContext, 210), AutoSizeUtils.mm2px(mContext, 280));
+                layoutParams = new FrameLayout.LayoutParams(AutoSizeUtils.mm2px(mContext, 210), AutoSizeUtils.mm2px(mContext, 280));
+            }
+            helper.getView(R.id.itemView).setLayoutParams(layoutParams);
             Picasso.get()
                     .load(DefaultConfig.checkReplaceProxy(item.pic))
-                    .transform(new RoundTransformation(MD5.string2MD5(item.pic))
-                            .centerCorp(true)
-                            .override(AutoSizeUtils.mm2px(mContext, 240), AutoSizeUtils.mm2px(mContext, 320))
-                            .roundRadius(AutoSizeUtils.mm2px(mContext, 10), RoundTransformation.RoundType.ALL))
+                    .transform(roundTransformation)
                     .placeholder(R.drawable.img_loading_placeholder)
                     .noFade()
 //                    .error(R.drawable.img_loading_placeholder)

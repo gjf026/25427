@@ -32,6 +32,7 @@ public class RoundTransformation implements Transformation {
     private int diameter;
     private int radius;
     private boolean isCenterCorp = true;//垂直方向不是中间裁剪，就是顶部
+    private boolean isRightCorp = false;//水平方向是否为右边裁剪
     private String key = "";
 
     public RoundTransformation(String key) {
@@ -46,6 +47,11 @@ public class RoundTransformation implements Transformation {
 
     public RoundTransformation centerCorp(boolean centerCorp) {
         this.isCenterCorp = centerCorp;
+        return this;
+    }
+
+    public RoundTransformation rightCorp(boolean rightCorp) {
+        this.isRightCorp = rightCorp;
         return this;
     }
 
@@ -191,7 +197,12 @@ public class RoundTransformation implements Transformation {
                         drawBottomLabel(mCanvas, mPaint, 0, 0, viewWidth, viewHeight);
                     }
                 } else {
-                    float dis = (width - viewWidth) / 2f;
+                    float dis;
+                    if (isRightCorp) {
+                        dis = width - viewWidth;
+                    } else {
+                        dis = (width - viewWidth) / 2f;
+                    }
                     mCanvas.translate(-dis, 0);
                     mCanvas.drawRoundRect(new RectF(dis, 0, viewWidth + dis, viewHeight), radius, radius, mPaint);
                     drawBottomLabel(mCanvas, mPaint, dis, 0, viewWidth + dis, viewHeight);

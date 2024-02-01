@@ -63,6 +63,7 @@
     <dimen name="vs_180">180mm</dimen>
     <dimen name="vs_190">190mm</dimen>
     <dimen name="vs_200">200mm</dimen>
+    <dimen name="vs_210">210mm</dimen>
     <dimen name="vs_214">214mm</dimen>
     <dimen name="vs_220">220mm</dimen>
     <dimen name="vs_230">230mm</dimen>
