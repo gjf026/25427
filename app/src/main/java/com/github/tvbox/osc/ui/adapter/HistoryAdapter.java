@@ -88,13 +88,14 @@ public class HistoryAdapter extends BaseQuickAdapter<VodInfo, BaseViewHolder> {
             item.pic = item.pic.trim();
             RoundTransformation roundTransformation = new RoundTransformation(MD5.string2MD5(item.pic))
                     .centerCorp(true)
+                    .rightCorp(true)
                     .roundRadius(AutoSizeUtils.mm2px(mContext, 10), RoundTransformation.RoundType.ALL);
             int defaultRatio = Hawk.get(HawkConfig.PIC_RATIO, 0);
             int width;
             int height;
             if (defaultRatio == 1) {
-                width = AutoSizeUtils.dp2px(mContext, 208);
-                height = AutoSizeUtils.dp2px(mContext, 117);
+                width = AutoSizeUtils.dp2px(mContext, 256);
+                height = AutoSizeUtils.dp2px(mContext, 144);
                 FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(width, height);
                 helper.getView(R.id.itemView).setLayoutParams(layoutParams);
             } else {

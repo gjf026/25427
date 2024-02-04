@@ -68,7 +68,7 @@ public class HistoryActivity extends BaseActivity {
         mGridView.setHasFixedSize(true);
         int defaultRatio = Hawk.get(HawkConfig.PIC_RATIO, 0);
         if (defaultRatio == 1) {
-            mGridView.setLayoutManager(new V7GridLayoutManager(this.mContext, 4));
+            mGridView.setLayoutManager(new V7GridLayoutManager(this.mContext, 3));
         } else {
             mGridView.setLayoutManager(new V7GridLayoutManager(this.mContext, isBaseOnWidth() ? 5 : 6));
         }

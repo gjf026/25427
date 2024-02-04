@@ -1,9 +1,7 @@
 package com.github.tvbox.osc.ui.adapter;
 
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -17,7 +15,6 @@ import com.github.tvbox.osc.util.DefaultConfig;
 import com.github.tvbox.osc.util.HawkConfig;
 import com.github.tvbox.osc.util.MD5;
 import com.orhanobut.hawk.Hawk;
-import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -99,13 +96,14 @@ public class GridAdapter extends BaseQuickAdapter<Movie.Video, BaseViewHolder> {
             item.pic = item.pic.trim();
             RoundTransformation roundTransformation = new RoundTransformation(MD5.string2MD5(item.pic))
                     .centerCorp(true)
+                    .rightCorp(true)
                     .roundRadius(AutoSizeUtils.mm2px(mContext, 10), RoundTransformation.RoundType.ALL);
             int defaultRatio = Hawk.get(HawkConfig.PIC_RATIO, 0);
             int width;
             int height;
             if (defaultRatio == 1) {
-                width = AutoSizeUtils.dp2px(mContext, 208);
-                height = AutoSizeUtils.dp2px(mContext, 117);
+                width = AutoSizeUtils.dp2px(mContext, 256);
+                height = AutoSizeUtils.dp2px(mContext, 144);
                 FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(width, height);
                 helper.getView(R.id.itemView).setLayoutParams(layoutParams);
             } else {
