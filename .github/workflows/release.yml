@@ -18,7 +18,7 @@ jobs:
           java-version: 11
       - uses: gradle/gradle-build-action@v2
         with:
-          gradle-version: current
+          gradle-version: 6.7.1
           arguments: assembleRelease
       - uses: r0adkll/sign-android-release@v1
         id: sign_app
