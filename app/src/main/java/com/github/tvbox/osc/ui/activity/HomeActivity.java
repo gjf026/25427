@@ -290,7 +290,7 @@ public class HomeActivity extends BaseActivity {
                 }
                 initViewPager(absXml);
                 SourceBean home = ApiConfig.get().getHomeSourceBean();
-                if (home != null && home.getName() != null && !home.getName().isEmpty()) tvName.setText(home.getName());
+         //       if (home != null && home.getName() != null && !home.getName().isEmpty()) tvName.setText(home.getName());
                 tvName.clearAnimation();
             }
         });
@@ -323,7 +323,7 @@ public class HomeActivity extends BaseActivity {
                         mHandler.postDelayed(new Runnable() {
                             @Override
                             public void run() {
-//                                if (!useCacheConfig) Toast.makeText(HomeActivity.this, "自定义jar加载成功", Toast.LENGTH_SHORT).show();
+                                if (!useCacheConfig) Toast.makeText(HomeActivity.this, "自定义jar加载成功", Toast.LENGTH_SHORT).show();
                                 initData();
                             }
                         }, 50);
